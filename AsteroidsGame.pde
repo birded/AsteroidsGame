@@ -1,15 +1,32 @@
 //your variable declarations here
 public void setup() 
 {
-  //your code here
+  size(500,500);
 }
 public void draw() 
 {
   //your code here
 }
-class SpaceShip //extends Floater  
+class SpaceShip extends Floater  
 {   
-    //your code here
+    SpaceShip(){
+      corners = 11;
+      int[] xS = {-8, 16, -8, -4, -8, -8, -4, -4, -8, -8, -4};
+      int[] yS = {12,  0,-12, -5, -5, -1, -1,  1,  1,  5,  5};
+      xCorners = xS;
+      yCorners = yS;
+
+      myColor = 255;
+      myCenterX = width/2;
+      myCenterY = center/2;
+      myDirectionX = 0;
+      myDirectionY = 0;
+      myPointDirection = 0;
+    }
+
+    abstract public void setX(int x){
+      myCenterX = x;
+    }
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
