@@ -41,13 +41,13 @@ class SpaceShip extends Floater
 
 public void keyPressed(){
   if(keyCode == 39){
-    ship.rotate(5);
+    ship.rotate(1);
   }
   if(keyCode == 37){
-    ship.rotate(-5);
+    ship.rotate(-1);
   }
   if(keyCode == 87){
-    //ship.accelerate();
+    ship.accelerate(0.1);
   }
 }
 
