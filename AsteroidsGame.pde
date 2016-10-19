@@ -1,11 +1,14 @@
-//your variable declarations here
+SpaceShip ship = new SpaceShip();
+
 public void setup() 
 {
   size(500,500);
 }
 public void draw() 
 {
-  //your code here
+  background(0);
+  ship.show();
+  ship.move();
 }
 class SpaceShip extends Floater  
 {   
@@ -16,18 +19,38 @@ class SpaceShip extends Floater
       xCorners = xS;
       yCorners = yS;
 
-      myColor = 255;
-      myCenterX = width/2;
-      myCenterY = center/2;
+      myColor = color(0,150,255);
+      myCenterX = 250;
+      myCenterY = 250;
       myDirectionX = 0;
       myDirectionY = 0;
       myPointDirection = 0;
     }
 
-    abstract public void setX(int x){
-      myCenterX = x;
-    }
+    public void setX(int x){myCenterX = x;}
+    public int getX(){return (int)myCenterX;}
+    public void setY(int y){myCenterY = y;}
+    public int getY(){return (int)myCenterY;}
+    public void setDirectionX(double x){myDirectionX = x;}
+    public double getDirectionX(){return myDirectionX;}
+    public void setDirectionY(double y){myDirectionY = y;}
+    public double getDirectionY(){return myDirectionY;}
+    public void setPointDirection(int degrees){myPointDirection = degrees;}
+    public double getPointDirection(){return myPointDirection;}
 }
+
+public void keyPressed(){
+  if(keyCode == 39){
+    ship.rotate(5);
+  }
+  if(keyCode == 37){
+    ship.rotate(-5);
+  }
+  if(keyCode == 87){
+    //ship.accelerate();
+  }
+}
+
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
   protected int corners;  //the number of corners, a triangular floater has 3   
