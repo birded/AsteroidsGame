@@ -1,15 +1,43 @@
+/** left/right arrow keys to rotate ship
+w/s to accelerate / decelerate
+spacebar to brake
+**/
+
 SpaceShip ship = new SpaceShip();
+Star[] stars;
+boolean rightPressed = false;
+boolean leftPressed = false;
+boolean wPressed = false;
+boolean sPressed = false;
 
 public void setup() 
 {
   size(500,500);
+  stars = new Star[150];
+
+  for(int i = 0 ; i < 150 ; i++){
+    stars[i] = new Star();
+  }
+
 }
+
 public void draw() 
 {
   background(0);
+
+  for(int i = 0 ; i < 150 ; i++){
+    stars[i].show();
+  }
+
   ship.show();
   ship.move();
+
+  if(rightPressed){ ship.rotate(5); }
+  if(leftPressed){ ship.rotate(-5); }
+  if(wPressed){ ship.accelerate(0.1); }
+  if(sPressed){ ship.accelerate(-0.1); }
 }
+
 class SpaceShip extends Floater  
 {   
     SpaceShip(){
@@ -40,16 +68,49 @@ class SpaceShip extends Floater
 }
 
 public void keyPressed(){
-  if(keyCode == 39){
-    ship.rotate(1);
-  }
-  if(keyCode == 37){
-    ship.rotate(-1);
-  }
-  if(keyCode == 87){
-    ship.accelerate(0.1);
+  if(keyCode == 39){rightPressed = true;} //right
+
+  if(keyCode == 37){leftPressed = true;} //left
+
+  if(key == 'w'){wPressed = true;}
+
+  if(key == 's'){sPressed = true;}
+
+  if(keyCode == 32){ //spacebar
+    ship.setDirectionY(0); 
+    ship.setDirectionX(0);
   }
 }
+
+public void keyReleased(){
+  if(keyCode == 39){rightPressed = false;} //right
+
+  if(keyCode == 37){leftPressed = false;} //left
+
+  if(key == 'w'){wPressed = false;}
+
+  if(key == 's'){sPressed = false;}
+
+}
+
+class Star
+{
+  private int x, y, size, opacity;
+  Star(){
+    x = (int)(Math.random() * width);
+    y = (int)(Math.random() * height);
+    size = (int)(Math.random() * 4 + 1); 
+    opacity = (int)(Math.random() * 300);
+  }
+
+  public void show(){
+    noStroke();
+    fill(255, 255, 255, opacity);
+    ellipse(x, y, size, size);
+  }
+
+}
+
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
