@@ -5,10 +5,7 @@ spacebar to brake
 
 SpaceShip ship = new SpaceShip();
 Star[] stars;
-boolean rightPressed = false;
-boolean leftPressed = false;
-boolean wPressed = false;
-boolean sPressed = false;
+boolean rightPressed, leftPressed, wPressed, sPressed = false;
 
 public void setup() 
 {
