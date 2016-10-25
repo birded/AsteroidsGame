@@ -1,18 +1,19 @@
 /** left/right arrow keys to rotate ship
 w/s to accelerate / decelerate
-spacebar to brake
+down to brake
+r to hyperspace
 **/
 
 SpaceShip ship = new SpaceShip();
 Star[] stars;
-boolean rightPressed, leftPressed, wPressed, sPressed = false;
+boolean rightPressed, leftPressed, wPressed, sPressed, rPressed = false;
 
 public void setup() 
 {
-  size(500,500);
-  stars = new Star[150];
+  size(600,600);
+  stars = new Star[250];
 
-  for(int i = 0 ; i < 150 ; i++){
+  for(int i = 0 ; i < stars.length ; i++){
     stars[i] = new Star();
   }
 
@@ -22,7 +23,7 @@ public void draw()
 {
   background(0);
 
-  for(int i = 0 ; i < 150 ; i++){
+  for(int i = 0 ; i < stars.length ; i++){
     stars[i].show();
   }
 
@@ -45,8 +46,8 @@ class SpaceShip extends Floater
       yCorners = yS;
 
       myColor = color(0,150,255);
-      myCenterX = 250;
-      myCenterY = 250;
+      myCenterX = 300;
+      myCenterY = 300;
       myDirectionX = 0;
       myDirectionY = 0;
       myPointDirection = 0;
@@ -73,7 +74,14 @@ public void keyPressed(){
 
   if(key == 's'){sPressed = true;}
 
-  if(keyCode == 32){ //spacebar
+  if(key == 'r'){ //hyperspace
+    ship.setX( (int)(Math.random() * width));
+    ship.setY( (int)(Math.random() * height));
+    ship.setDirectionX(0);
+    ship.setDirectionY(0);
+  }
+
+  if(keyCode == 40){ //down arrow key, brake ship
     ship.setDirectionY(0); 
     ship.setDirectionX(0);
   }
