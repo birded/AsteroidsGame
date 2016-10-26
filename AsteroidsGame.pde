@@ -5,6 +5,7 @@ r to hyperspace
 **/
 
 SpaceShip ship = new SpaceShip();
+Asteroid[] asteroids;
 Star[] stars;
 boolean rightPressed, leftPressed, wPressed, sPressed, rPressed = false;
 
@@ -15,6 +16,12 @@ public void setup()
 
   for(int i = 0 ; i < stars.length ; i++){
     stars[i] = new Star();
+  }
+
+  asteroids = new Asteroid[15];
+  for(int i = 0 ; i < asteroids.length ; i++){
+    asteroids[i] = new Asteroid();
+    asteroids[i].accelerate(0.5);
   }
 
 }
@@ -30,39 +37,17 @@ public void draw()
   ship.show();
   ship.move();
 
+  for(int i = 0 ; i < asteroids.length ; i++){
+    asteroids[i].rotate(asteroids[i].getRotSpeed());
+    asteroids[i].move();
+    asteroids[i].show();
+  }
+
+
   if(rightPressed){ ship.rotate(5); }
   if(leftPressed){ ship.rotate(-5); }
   if(wPressed){ ship.accelerate(0.1); }
   if(sPressed){ ship.accelerate(-0.1); }
-}
-
-class SpaceShip extends Floater  
-{   
-    SpaceShip(){
-      corners = 11;
-      int[] xS = {-8, 16, -8, -4, -8, -8, -4, -4, -8, -8, -4};
-      int[] yS = {12,  0,-12, -5, -5, -1, -1,  1,  1,  5,  5};
-      xCorners = xS;
-      yCorners = yS;
-
-      myColor = color(0,255,0);
-      myCenterX = 300;
-      myCenterY = 300;
-      myDirectionX = 0;
-      myDirectionY = 0;
-      myPointDirection = 0;
-    }
-
-    public void setX(int x){myCenterX = x;}
-    public int getX(){return (int)myCenterX;}
-    public void setY(int y){myCenterY = y;}
-    public int getY(){return (int)myCenterY;}
-    public void setDirectionX(double x){myDirectionX = x;}
-    public double getDirectionX(){return myDirectionX;}
-    public void setDirectionY(double y){myDirectionY = y;}
-    public double getDirectionY(){return myDirectionY;}
-    public void setPointDirection(int degrees){myPointDirection = degrees;}
-    public double getPointDirection(){return myPointDirection;}
 }
 
 public void keyPressed(){
@@ -98,10 +83,39 @@ public void keyReleased(){
 
 }
 
-class Star
+public class SpaceShip extends Floater
+{   
+    public SpaceShip(){
+      corners = 11;
+      int[] xS = {-8, 16, -8, -4, -8, -8, -4, -4, -8, -8, -4};
+      int[] yS = {12,  0,-12, -5, -5, -1, -1,  1,  1,  5,  5};
+      xCorners = xS;
+      yCorners = yS;
+
+      myColor = color(0,255,0);
+      myCenterX = 300;
+      myCenterY = 300;
+      myDirectionX = 0;
+      myDirectionY = 0;
+      myPointDirection = 0;
+    }
+
+    public void setX(int x){myCenterX = x;}
+    public int getX(){return (int)myCenterX;}
+    public void setY(int y){myCenterY = y;}
+    public int getY(){return (int)myCenterY;}
+    public void setDirectionX(double x){myDirectionX = x;}
+    public double getDirectionX(){return myDirectionX;}
+    public void setDirectionY(double y){myDirectionY = y;}
+    public double getDirectionY(){return myDirectionY;}
+    public void setPointDirection(int degrees){myPointDirection = degrees;}
+    public double getPointDirection(){return myPointDirection;}
+}
+
+public class Star
 {
   private int x, y, size, opacity;
-  Star(){
+  public Star(){
     x = (int)(Math.random() * width);
     y = (int)(Math.random() * height);
     size = (int)(Math.random() * 4 + 1); 
@@ -116,6 +130,62 @@ class Star
 
 }
 
+public class Asteroid extends Floater
+{
+  private int rotSpeed; 
+
+  Asteroid(){
+      corners = 9;
+      int[] xS = {6, 9, 13, 14, 10, -11, -14, -12, -12};
+      int[] yS = {13, 14, 12, -4, -14, -13, -2, 7, 10};
+
+      xCorners = xS;
+      yCorners = yS;   
+      myColor = color(0,255,0);
+      myCenterX = (int)(Math.random()* 600);
+      myCenterY = (int)(Math.random()* 600);
+      myDirectionX = 0;
+      myDirectionY = 0;
+      myPointDirection = Math.random()*360;
+
+      rotSpeed = (int)(Math.random() * 5 - 2);
+  }
+  public void setX(int x){myCenterX = x;}
+  public int getX(){return (int)myCenterX;}
+  public void setY(int y){myCenterY = y;}
+  public int getY(){return (int)myCenterY;}
+  public void setDirectionX(double x){myDirectionX = x;}
+  public double getDirectionX(){return myDirectionX;}
+  public void setDirectionY(double y){myDirectionY = y;}
+  public double getDirectionY(){return myDirectionY;}
+  public void setPointDirection(int degrees){myPointDirection = degrees;}
+  public double getPointDirection(){return myPointDirection;}
+  public int getRotSpeed(){return rotSpeed;}
+  
+  public void move(){  
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;
+
+    if(myCenterX >width+12) //accounting for edges of asteroid
+    {     
+      myCenterX = -12;    
+    }    
+    else if (myCenterX<0-12)
+    {     
+      myCenterX = width+12;    
+    }    
+    if(myCenterY >height+12)
+    {    
+      myCenterY = -12;    
+    }   
+    else if (myCenterY < -12)
+    {     
+      myCenterY = height+12;    
+    }   
+  }
+
+
+}
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
