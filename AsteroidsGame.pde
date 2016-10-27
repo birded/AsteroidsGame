@@ -18,7 +18,7 @@ public void setup()
     stars[i] = new Star();
   }
 
-  asteroids = new Asteroid[15];
+  asteroids = new Asteroid[10];
   for(int i = 0 ; i < asteroids.length ; i++){
     asteroids[i] = new Asteroid();
     asteroids[i].accelerate(0.5);
@@ -135,12 +135,21 @@ public class Asteroid extends Floater
   private int rotSpeed; 
 
   Asteroid(){
-      corners = 9;
-      int[] xS = {6, 9, 13, 14, 10, -11, -14, -12, -12};
-      int[] yS = {13, 14, 12, -4, -14, -13, -2, 7, 10};
 
+    if(Math.random() < 0.5){ //variation 1
+      corners = 10;
+      int[] xS = {5, 9, 15, 19, 8, 3, -8, -15, -18, -9};
+      int[] yS = {15, 9, 8, -1, -17, -20, -19, -16, 4, 18};
       xCorners = xS;
-      yCorners = yS;   
+      yCorners = yS;  
+    }else{ //variation 2
+      corners = 18;
+      int[] xS = {6, 14, 16, 11, 8, -2, -5, -3, -5, -7, -15, -17, -18, -17, -11, -9, -5, -4};
+      int[] yS = {15, 8, 0, -2, -17, -18, -15, -11, -9, -12, -11, -3, 6, 13, 14, 15, 17, 16};
+      xCorners = xS;
+      yCorners = yS;  
+    }
+
       myColor = color(0,255,0);
       myCenterX = (int)(Math.random()* 600);
       myCenterY = (int)(Math.random()* 600);
@@ -166,21 +175,21 @@ public class Asteroid extends Floater
     myCenterX += myDirectionX;    
     myCenterY += myDirectionY;
 
-    if(myCenterX >width+12) //accounting for edges of asteroid
+    if(myCenterX >width+20) //accounting for edges of asteroid
     {     
-      myCenterX = -12;    
+      myCenterX = -20;    
     }    
-    else if (myCenterX<0-12)
+    else if (myCenterX<0-20)
     {     
-      myCenterX = width+12;    
+      myCenterX = width+20;    
     }    
-    if(myCenterY >height+12)
+    if(myCenterY >height+20)
     {    
-      myCenterY = -12;    
+      myCenterY = -20;    
     }   
-    else if (myCenterY < -12)
+    else if (myCenterY < -20)
     {     
-      myCenterY = height+12;    
+      myCenterY = height+20;    
     }   
   }
 
