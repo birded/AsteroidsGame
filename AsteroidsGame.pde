@@ -21,7 +21,7 @@ public void setup()
   asteroids = new Asteroid[10];
   for(int i = 0 ; i < asteroids.length ; i++){
     asteroids[i] = new Asteroid();
-    asteroids[i].accelerate(0.5);
+    asteroids[i].accelerate(Math.random());
   }
 
 }
