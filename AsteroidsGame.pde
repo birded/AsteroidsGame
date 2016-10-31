@@ -1,8 +1,9 @@
-/** left/right arrow keys to rotate ship
-w/s to accelerate / decelerate
-down to brake
-r to hyperspace
-**/
+/* 
+ * left/right arrow keys to rotate ship
+ * w/s to accelerate / decelerate
+ * down to brake
+ * r to hyperspace
+*/
 
 SpaceShip ship = new SpaceShip();
 Asteroid[] asteroids;
@@ -37,8 +38,8 @@ public void draw()
   ship.show();
   ship.move();
 
+
   for(int i = 0 ; i < asteroids.length ; i++){
-    asteroids[i].rotate(asteroids[i].getRotSpeed());
     asteroids[i].move();
     asteroids[i].show();
   }
@@ -175,6 +176,7 @@ public class Asteroid extends Floater
     myCenterX += myDirectionX;    
     myCenterY += myDirectionY;
 
+    myPointDirection+=rotSpeed;   
     if(myCenterX >width+20) //accounting for edges of asteroid
     {     
       myCenterX = -20;    
@@ -195,6 +197,8 @@ public class Asteroid extends Floater
 
 
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
