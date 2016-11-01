@@ -173,15 +173,15 @@ public class Asteroid extends Floater
   public int getRotSpeed(){return rotSpeed;}
   
   public void move(){  
+    rotate(rotSpeed);
+
     myCenterX += myDirectionX;    
     myCenterY += myDirectionY;
-
-    myPointDirection+=rotSpeed;   
-    if(myCenterX >width+20) //accounting for edges of asteroid
+    if(myCenterX >width+20) //accounting for width of asteroid
     {     
       myCenterX = -20;    
     }    
-    else if (myCenterX<0-20)
+    else if (myCenterX< -20)
     {     
       myCenterX = width+20;    
     }    
