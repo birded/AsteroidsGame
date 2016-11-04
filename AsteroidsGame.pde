@@ -115,18 +115,25 @@ public class SpaceShip extends Floater
 
 public class Star
 {
-  private int x, y, size, opacity;
+  private int x, y, size, opacity, rotation;
   public Star(){
     x = (int)(Math.random() * width);
     y = (int)(Math.random() * height);
-    size = (int)(Math.random() * 4 + 1); 
+    size = (int)(Math.random() * 3 + 1); 
     opacity = (int)(Math.random() * 300);
+    rotation = (int)(Math.random()*360);
   }
 
   public void show(){
     noStroke();
     fill(255, 255, 255, opacity);
-    ellipse(x, y, size, size);
+    rectMode(CENTER);
+    pushMatrix();
+    translate(x,y);
+    rotate(rotation);
+    rect(0,0,size,size);
+    popMatrix();
+    //ellipse(x, y, size, size);
   }
 
 }
