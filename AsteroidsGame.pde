@@ -6,9 +6,10 @@
 */
 
 SpaceShip ship = new SpaceShip();
-Asteroid[] asteroids;
 Star[] stars;
 boolean rightPressed, leftPressed, wPressed, sPressed, rPressed = false;
+
+ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 
 public void setup() 
 {
@@ -19,10 +20,9 @@ public void setup()
     stars[i] = new Star();
   }
 
-  asteroids = new Asteroid[10];
-  for(int i = 0 ; i < asteroids.length ; i++){
-    asteroids[i] = new Asteroid();
-    asteroids[i].accelerate(Math.random());
+  for(int i = 0 ; i < 15 ; i++){
+  asteroids.add(new Asteroid());
+  asteroids.get(i).accelerate(Math.random());
   }
 
 }
@@ -38,10 +38,37 @@ public void draw()
   ship.show();
   ship.move();
 
+  double asteroidChance = Math.random();
 
-  for(int i = 0 ; i < asteroids.length ; i++){
-    asteroids[i].move();
-    asteroids[i].show();
+  for(int i = 0 ; i < asteroids.size() ; i++){
+    asteroids.get(i).move();
+    asteroids.get(i).show();
+
+    if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , ship.getX() , ship.getY() ) < 20 ){ //dist between the asteroid and ship
+        asteroids.remove(i);
+      System.out.println(asteroidChance);
+      if(asteroidChance < 0.25){
+        //add an asteroid above the screen
+        asteroids.add(new Asteroid( (int)Math.random()*600, -19 ));
+      }
+      else if(asteroidChance < 0.5){
+
+        //add an asteroid to the right of the screen
+        asteroids.add(new Asteroid( width+19, (int)Math.random() * 600));
+      }
+      else if(asteroidChance < 0.75){
+        //add an asteroid to the bottom of the screen
+        asteroids.add(new Asteroid( (int)(Math.random()*600), height+19 ));
+      }
+      else{
+        //add an asteroid to the left of the screen
+        asteroids.add(new Asteroid( -19, (int)Math.random() * 600 ));
+      }
+
+        asteroids.get(asteroids.size()-1).accelerate(Math.random()); //set an acceleration for the new asteroid
+
+    }
+
   }
 
 
@@ -111,6 +138,26 @@ public class SpaceShip extends Floater
     public double getDirectionY(){return myDirectionY;}
     public void setPointDirection(int degrees){myPointDirection = degrees;}
     public double getPointDirection(){return myPointDirection;}
+
+  public void show ()  //Draws the floater at the current position  
+  {             
+    fill(0,0,0);   
+    stroke(myColor);    
+    strokeWeight(1.5);
+    //convert degrees to radians for sin and cos         
+    double dRadians = myPointDirection*(Math.PI/180);                 
+    int xRotatedTranslated, yRotatedTranslated;    
+    beginShape();         
+    for(int nI = 0; nI < corners; nI++)    
+    {     
+      //rotate and translate the coordinates of the floater using current direction 
+      xRotatedTranslated = (int)((xCorners[nI]* Math.cos(dRadians)) - (yCorners[nI] * Math.sin(dRadians))+myCenterX);     
+      yRotatedTranslated = (int)((xCorners[nI]* Math.sin(dRadians)) + (yCorners[nI] * Math.cos(dRadians))+myCenterY);      
+      vertex(xRotatedTranslated,yRotatedTranslated);    
+    }   
+    endShape(CLOSE);  
+  }   
+
 }
 
 public class Star
@@ -143,7 +190,6 @@ public class Asteroid extends Floater
   private int rotSpeed; 
 
   Asteroid(){
-
     if(Math.random() < 0.5){ //variation 1
       corners = 10;
       int[] xS = {5, 9, 15, 19, 8, 3, -8, -15, -18, -9};
@@ -167,6 +213,32 @@ public class Asteroid extends Floater
 
       rotSpeed = (int)(Math.random() * 5 - 2);
   }
+
+  Asteroid(int x, int y){
+    if(Math.random() < 0.5){ //variation 1
+      corners = 10;
+      int[] xS = {5, 9, 15, 19, 8, 3, -8, -15, -18, -9};
+      int[] yS = {15, 9, 8, -1, -17, -20, -19, -16, 4, 18};
+      xCorners = xS;
+      yCorners = yS;  
+    }else{ //variation 2
+      corners = 18;
+      int[] xS = {6, 14, 16, 11, 8, -2, -5, -3, -5, -7, -15, -17, -18, -17, -11, -9, -5, -4};
+      int[] yS = {15, 8, 0, -2, -17, -18, -15, -11, -9, -12, -11, -3, 6, 13, 14, 15, 17, 16};
+      xCorners = xS;
+      yCorners = yS;  
+    }
+
+      myColor = color(0,255,0);
+      myCenterX = x;
+      myCenterY = y;
+      myDirectionX = 0;
+      myDirectionY = 0;
+      myPointDirection = Math.random()*360;
+
+      rotSpeed = (int)(Math.random() * 5 - 2);
+  }
+
   public void setX(int x){myCenterX = x;}
   public int getX(){return (int)myCenterX;}
   public void setY(int y){myCenterY = y;}
@@ -179,11 +251,31 @@ public class Asteroid extends Floater
   public double getPointDirection(){return myPointDirection;}
   public int getRotSpeed(){return rotSpeed;}
   
+  public void show () 
+  {          
+    fill(0,0,0);
+    strokeWeight(0.7); 
+    stroke(myColor);    
+    //convert degrees to radians for sin and cos         
+    double dRadians = myPointDirection*(Math.PI/180);                 
+    int xRotatedTranslated, yRotatedTranslated;    
+    beginShape();         
+    for(int nI = 0; nI < corners; nI++)    
+    {     
+      //rotate and translate the coordinates of the floater using current direction 
+      xRotatedTranslated = (int)((xCorners[nI]* Math.cos(dRadians)) - (yCorners[nI] * Math.sin(dRadians))+myCenterX);     
+      yRotatedTranslated = (int)((xCorners[nI]* Math.sin(dRadians)) + (yCorners[nI] * Math.cos(dRadians))+myCenterY);      
+      vertex(xRotatedTranslated,yRotatedTranslated);    
+    }   
+    endShape(CLOSE);  
+  }   
+
   public void move(){  
     rotate(rotSpeed);
 
     myCenterX += myDirectionX;    
     myCenterY += myDirectionY;
+
     if(myCenterX >width+20) //accounting for width of asteroid
     {     
       myCenterX = -20;    
