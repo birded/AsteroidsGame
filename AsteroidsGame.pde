@@ -45,8 +45,7 @@ public void draw()
     asteroids.get(i).show();
 
     if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , ship.getX() , ship.getY() ) < 20 ){ //dist between the asteroid and ship
-        asteroids.remove(i);
-      System.out.println(asteroidChance);
+      asteroids.remove(i);
       if(asteroidChance < 0.25){
         //add an asteroid above the screen
         asteroids.add(new Asteroid( (int)Math.random()*600, -19 ));
