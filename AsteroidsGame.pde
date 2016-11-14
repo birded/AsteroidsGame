@@ -7,8 +7,9 @@
 
 SpaceShip ship = new SpaceShip();
 Star[] stars;
-boolean rightPressed, leftPressed, wPressed, sPressed, rPressed = false;
+boolean rightPressed, leftPressed, wPressed, sPressed, rPressed, spacePressed = false;
 
+ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 
 public void setup() 
@@ -25,6 +26,7 @@ public void setup()
   asteroids.get(i).accelerate(Math.random());
   }
 
+
 }
 
 public void draw() 
@@ -35,14 +37,26 @@ public void draw()
     stars[i].show();
   }
 
-  ship.show();
   ship.move();
-
   double asteroidChance = Math.random();
 
+  for(int i = 0; i < bullets.size() ; i++){
+    bullets.get(i).move();
+    bullets.get(i).show();
+  }
+
+  ship.show();
   for(int i = 0 ; i < asteroids.size() ; i++){
     asteroids.get(i).move();
     asteroids.get(i).show();
+
+    //for(int n = 0; n < bullets.size(); n++){
+     // if( dist(asteroids.get(n).getX() , asteroids.get(n).getY() , bullets.get(n).getX() , bullets.get(n).getY() ) < 20){
+      //  asteroids.remove(n);
+       // bullets.remove(n);
+     // }
+
+    //}
 
     if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , ship.getX() , ship.getY() ) < 20 ){ //dist between the asteroid and ship
       asteroids.remove(i);
@@ -75,12 +89,15 @@ public void draw()
   if(leftPressed){ ship.rotate(-5); }
   if(wPressed){ ship.accelerate(0.1); }
   if(sPressed){ ship.accelerate(-0.1); }
+  if(spacePressed && frameCount%10 == 0 ){ bullets.add(new Bullet(ship));} //limits # of bullets created
 }
 
 public void keyPressed(){
   if(keyCode == 39){rightPressed = true;} //right
 
   if(keyCode == 37){leftPressed = true;} //left
+
+  if(keyCode == 32){spacePressed = true;} //spacebar
 
   if(key == 'w'){wPressed = true;}
 
@@ -103,6 +120,8 @@ public void keyReleased(){
   if(keyCode == 39){rightPressed = false;} //right
 
   if(keyCode == 37){leftPressed = false;} //left
+
+  if(keyCode == 32){spacePressed = false;} //space
 
   if(key == 'w'){wPressed = false;}
 
@@ -296,6 +315,42 @@ public class Asteroid extends Floater
 
 }
 
+public class Bullet extends Floater{
+
+  Bullet(SpaceShip theShip){
+    myCenterX = theShip.getX();
+    myCenterY = theShip.getY();
+    myPointDirection = theShip.getPointDirection();
+    double dRadians =myPointDirection*(Math.PI/180);
+    myDirectionX = 5 * Math.cos(dRadians) + theShip.getDirectionX();
+    myDirectionY = 5 * Math.sin(dRadians) + theShip.getDirectionY();
+    myColor = color(0,255,0);
+  }
+
+  public void show(){
+    fill(0,0,0);
+    stroke(myColor);
+    strokeWeight(1);
+    ellipse((float)myCenterX,(float)myCenterY, 5, 5);
+  }
+
+public void move ()   
+  {      
+    //change the x and y coordinates by myDirectionX and myDirectionY       
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;     
+  }   
+    public void setX(int x){myCenterX = x;}
+    public int getX(){return (int)myCenterX;}
+    public void setY(int y){myCenterY = y;}
+    public int getY(){return (int)myCenterY;}
+    public void setDirectionX(double x){myDirectionX = x;}
+    public double getDirectionX(){return myDirectionX;}
+    public void setDirectionY(double y){myDirectionY = y;}
+    public double getDirectionY(){return myDirectionY;}
+    public void setPointDirection(int degrees){myPointDirection = degrees;}
+    public double getPointDirection(){return myPointDirection;}
+}
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
