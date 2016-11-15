@@ -38,7 +38,6 @@ public void draw()
   }
 
   ship.move();
-  double asteroidChance = Math.random();
 
   for(int i = 0; i < bullets.size() ; i++){
     bullets.get(i).move();
@@ -50,16 +49,37 @@ public void draw()
     asteroids.get(i).move();
     asteroids.get(i).show();
 
-    //for(int n = 0; n < bullets.size(); n++){
-     // if( dist(asteroids.get(n).getX() , asteroids.get(n).getY() , bullets.get(n).getX() , bullets.get(n).getY() ) < 20){
-      //  asteroids.remove(n);
-       // bullets.remove(n);
-     // }
+    /** for(int n = 0; n < bullets.size() ; n++){
+      for(int j = 0; j < asteroids.size() ; j++){
+      if( dist(asteroids.get(j).getX() , asteroids.get(j).getY() , bullets.get(n).getX() , bullets.get(n).getY() ) < 20){
+        asteroids.remove(j);
+        bullets.remove(n);
+        System.out.println("!");    
+        addAsteroid();
 
-    //}
+      }
+      }
+    } **/
 
     if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , ship.getX() , ship.getY() ) < 20 ){ //dist between the asteroid and ship
       asteroids.remove(i);
+      addAsteroid();
+
+    }
+
+  }
+
+
+  if(rightPressed){ ship.rotate(5); }
+  if(leftPressed){ ship.rotate(-5); }
+  if(wPressed){ ship.accelerate(0.1); }
+  if(sPressed){ ship.accelerate(-0.1); }
+  if(spacePressed && frameCount%10 == 0 ){ bullets.add(new Bullet(ship));} //limits # of bullets created
+}
+
+public void addAsteroid(){
+
+  double asteroidChance = Math.random();
       if(asteroidChance < 0.25){
         //add an asteroid above the screen
         asteroids.add(new Asteroid( (int)Math.random()*600, -19 ));
@@ -80,16 +100,6 @@ public void draw()
 
         asteroids.get(asteroids.size()-1).accelerate(Math.random()); //set an acceleration for the new asteroid
 
-    }
-
-  }
-
-
-  if(rightPressed){ ship.rotate(5); }
-  if(leftPressed){ ship.rotate(-5); }
-  if(wPressed){ ship.accelerate(0.1); }
-  if(sPressed){ ship.accelerate(-0.1); }
-  if(spacePressed && frameCount%10 == 0 ){ bullets.add(new Bullet(ship));} //limits # of bullets created
 }
 
 public void keyPressed(){
