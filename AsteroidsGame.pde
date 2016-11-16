@@ -5,9 +5,17 @@
  * r to hyperspace
 */
 
+//score increment based on asteroid speed
+// if dX < -0.4 or dX > 0.4 or dY < -0.4 or dY > 0.4
+//  score += 15
+
+//
+
 SpaceShip ship = new SpaceShip();
 Star[] stars;
-boolean rightPressed, leftPressed, wPressed, sPressed, rPressed, spacePressed = false;
+boolean rightPressed, leftPressed, wPressed, sPressed, rPressed, spacePressed, shipHit = false;
+int score = 0;
+int lives = 3;
 
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
@@ -33,6 +41,8 @@ public void draw()
 {
   background(0);
 
+
+
   for(int i = 0 ; i < stars.length ; i++){
     stars[i].show();
   }
@@ -45,30 +55,45 @@ public void draw()
   }
 
   ship.show();
+
   for(int i = 0 ; i < asteroids.size() ; i++){
     asteroids.get(i).move();
     asteroids.get(i).show();
 
-    /** for(int n = 0; n < bullets.size() ; n++){
-      for(int j = 0; j < asteroids.size() ; j++){
-      if( dist(asteroids.get(j).getX() , asteroids.get(j).getY() , bullets.get(n).getX() , bullets.get(n).getY() ) < 20){
-        asteroids.remove(j);
-        bullets.remove(n);
-        System.out.println("!");    
-        addAsteroid();
+    for(int n = 0; n < bullets.size() ; n++){
+        if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , bullets.get(n).getX() , bullets.get(n).getY() ) < 20){
+          if( asteroids.get(i).getDirectionX() < -0.4 || asteroids.get(i).getDirectionX() > 0.4 || asteroids.get(i).getDirectionY() < -0.4 || asteroids.get(i).getDirectionY() > 0.4){
+            //if speed of asteroid is greater than 0.4 / -0.4 in any direction give 10 pt
+            //add more tiers of score? 0.3~0.5, >0.8
+            score += 10;
+          }else{
+            score += 5;
+          }
 
-      }
-      }
-    } **/
 
+          asteroids.remove(i);
+          bullets.remove(n);
+          addAsteroid();
+          
+
+        }
+    } 
+
+
+    //remove asteroid if ship hits
     if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , ship.getX() , ship.getY() ) < 20 ){ //dist between the asteroid and ship
       asteroids.remove(i);
       addAsteroid();
-
+      lives--;
     }
+    
+
 
   }
 
+  fill(255);
+  text("Score: " + score, 10, 15);
+  text("Lives: " + lives, 10, 30);
 
   if(rightPressed){ ship.rotate(5); }
   if(leftPressed){ ship.rotate(-5); }
@@ -166,6 +191,7 @@ public class SpaceShip extends Floater
     public double getDirectionY(){return myDirectionY;}
     public void setPointDirection(int degrees){myPointDirection = degrees;}
     public double getPointDirection(){return myPointDirection;}
+    public void setColor(int c){ myColor = c;}
 
   public void show ()  //Draws the floater at the current position  
   {             
@@ -296,6 +322,9 @@ public class Asteroid extends Floater
       vertex(xRotatedTranslated,yRotatedTranslated);    
     }   
     endShape(CLOSE);  
+
+    fill(255);
+    text((float)myDirectionX + ", " + (float)myDirectionY, (float)myCenterX, (float)myCenterY);
   }   
 
   public void move(){  
