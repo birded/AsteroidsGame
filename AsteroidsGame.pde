@@ -29,9 +29,9 @@ public void setup()
     stars[i] = new Star();
   }
 
-  for(int i = 0 ; i < 15 ; i++){
+  for(int i = 0 ; i < 2 ; i++){
   asteroids.add(new Asteroid());
-  asteroids.get(i).accelerate(Math.random());
+  asteroids.get(i).accelerate(Math.random() *2);
   }
 
 
@@ -56,23 +56,33 @@ public void draw()
 
   ship.show();
 
+
+
   for(int i = 0 ; i < asteroids.size() ; i++){
     asteroids.get(i).move();
     asteroids.get(i).show();
 
     for(int n = 0; n < bullets.size() ; n++){
         if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , bullets.get(n).getX() , bullets.get(n).getY() ) < 20){
-          if( asteroids.get(i).getDirectionX() < -0.4 || asteroids.get(i).getDirectionX() > 0.4 || asteroids.get(i).getDirectionY() < -0.4 || asteroids.get(i).getDirectionY() > 0.4){
+          if( asteroids.get(i).getDirectionX() < -0.9 || asteroids.get(i).getDirectionX() > 0.9 || asteroids.get(i).getDirectionY() < -0.4 || asteroids.get(i).getDirectionY() > 0.4){
+            //if speed of asteroid is greater than 0.9 / -0.9 in any direction give 10 pt
+            score += 15;
+          }else if( asteroids.get(i).getDirectionX() < -0.4 || asteroids.get(i).getDirectionX() > 0.4 || asteroids.get(i).getDirectionY() < -0.4 || asteroids.get(i).getDirectionY() > 0.4){
             //if speed of asteroid is greater than 0.4 / -0.4 in any direction give 10 pt
-            //add more tiers of score? 0.3~0.5, >0.8
             score += 10;
-          }else{
+          }else if( asteroids.get(i).getDirectionX() < -0.2 || asteroids.get(i).getDirectionX() > 0.2 || asteroids.get(i).getDirectionY() < -0.4 || asteroids.get(i).getDirectionY() > 0.4){
             score += 5;
+          }else{
+            score += 3;
           }
 
 
           asteroids.remove(i);
           bullets.remove(n);
+          addAsteroid();
+
+          //add 2 asteroids per asteroid destroyed
+          //make it 50% chance to add another asteroid? 
           addAsteroid();
           
 
@@ -123,7 +133,7 @@ public void addAsteroid(){
         asteroids.add(new Asteroid( -19, (int)Math.random() * 600 ));
       }
 
-        asteroids.get(asteroids.size()-1).accelerate(Math.random()); //set an acceleration for the new asteroid
+        asteroids.get(asteroids.size()-1).accelerate(Math.random() *2); //set an acceleration for the new asteroid
 
 }
 
@@ -324,7 +334,11 @@ public class Asteroid extends Floater
     endShape(CLOSE);  
 
     fill(255);
-    text((float)myDirectionX + ", " + (float)myDirectionY, (float)myCenterX, (float)myCenterY);
+
+    //double dirX = (double)Math.round(myDirectionX * 100d) / 100d;
+    //double dirY = (double)Math.round(myDirectionY * 100d) / 100d;
+    //text((float)myDirectionX + ", " + (float)myDirectionY, (float)myCenterX, (float)myCenterY);
+    //text( dirX + ", " + dirY, (float)myCenterX, (float)myCenterY);
   }   
 
   public void move(){  
