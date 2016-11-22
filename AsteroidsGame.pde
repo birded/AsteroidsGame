@@ -13,7 +13,7 @@
 
 SpaceShip ship = new SpaceShip();
 Star[] stars;
-boolean rightPressed, leftPressed, wPressed, sPressed, rPressed, spacePressed, shipHit = false;
+boolean rightPressed, leftPressed, wPressed, sPressed, rPressed, spacePressed, shipHit, gameOver = false;
 int score = 0;
 int lives = 3;
 
@@ -29,7 +29,7 @@ public void setup()
     stars[i] = new Star();
   }
 
-  for(int i = 0 ; i < 2 ; i++){
+  for(int i = 0 ; i < 5 ; i++){
   asteroids.add(new Asteroid());
   asteroids.get(i).accelerate(Math.random() *2);
   }
@@ -57,6 +57,7 @@ public void draw()
   ship.show();
 
 
+  double newAstChance = Math.random();
 
   for(int i = 0 ; i < asteroids.size() ; i++){
     asteroids.get(i).move();
@@ -80,10 +81,10 @@ public void draw()
           asteroids.remove(i);
           bullets.remove(n);
           addAsteroid();
-
-          //add 2 asteroids per asteroid destroyed
-          //make it 50% chance to add another asteroid? 
-          addAsteroid();
+          if(newAstChance < 0.5){
+            //50% chance to add another asteroid
+            addAsteroid();
+          }
           
 
         }
@@ -91,7 +92,7 @@ public void draw()
 
 
     //remove asteroid if ship hits
-    if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , ship.getX() , ship.getY() ) < 20 ){ //dist between the asteroid and ship
+    if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , ship.getX() , ship.getY() ) < 22 ){ //dist between the asteroid and ship
       asteroids.remove(i);
       addAsteroid();
       lives--;
@@ -105,11 +106,13 @@ public void draw()
   text("Score: " + score, 10, 15);
   text("Lives: " + lives, 10, 30);
 
+  if(lives <= 0){ gameOver = true;}
   if(rightPressed){ ship.rotate(5); }
   if(leftPressed){ ship.rotate(-5); }
   if(wPressed){ ship.accelerate(0.1); }
   if(sPressed){ ship.accelerate(-0.1); }
   if(spacePressed && frameCount%10 == 0 ){ bullets.add(new Bullet(ship));} //limits # of bullets created
+
 }
 
 public void addAsteroid(){
