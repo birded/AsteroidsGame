@@ -47,7 +47,9 @@ public void draw()
     stars[i].show();
   }
 
-  ship.move();
+  if(gameOver == false){
+   ship.move();
+  }
 
   for(int i = 0; i < bullets.size() ; i++){
     bullets.get(i).move();
@@ -60,7 +62,11 @@ public void draw()
   double newAstChance = Math.random();
 
   for(int i = 0 ; i < asteroids.size() ; i++){
-    asteroids.get(i).move();
+
+    if(gameOver == false){
+      asteroids.get(i).move();
+    }
+
     asteroids.get(i).show();
 
     for(int n = 0; n < bullets.size() ; n++){
@@ -103,15 +109,36 @@ public void draw()
   }
 
   fill(255);
+  textAlign(LEFT);
+  textSize(12);
   text("Score: " + score, 10, 15);
   text("Lives: " + lives, 10, 30);
 
   if(lives <= 0){ gameOver = true;}
-  if(rightPressed){ ship.rotate(5); }
-  if(leftPressed){ ship.rotate(-5); }
-  if(wPressed){ ship.accelerate(0.1); }
-  if(sPressed){ ship.accelerate(-0.1); }
-  if(spacePressed && frameCount%10 == 0 ){ bullets.add(new Bullet(ship));} //limits # of bullets created
+  if(lives > 0){ gameOver = false;}
+
+  if(gameOver == false){ //only able to control ship if game is not over
+    if(rightPressed){ ship.rotate(5); }
+    if(leftPressed){ ship.rotate(-5); }
+    if(wPressed){ ship.accelerate(0.1); }
+    if(sPressed){ ship.accelerate(-0.1); }
+    if(spacePressed && frameCount%10 == 0){ bullets.add(new Bullet(ship));} //limits # of bullets created
+  }
+
+
+  //game over screen
+
+  if(gameOver == true){
+    fill(0,0,0,100);
+    rectMode(CENTER);
+    rect(width/2, height/2, 600, 600);
+
+    fill(255);
+    textAlign(CENTER);
+    textSize(48);
+    text("GAME OVER \n Score: " + score, width/2, height/2);
+
+  }
 
 }
 
@@ -152,10 +179,12 @@ public void keyPressed(){
   if(key == 's'){sPressed = true;}
 
   if(key == 'r'){ //hyperspace
+    if(gameOver == false){
     ship.setX( (int)(Math.random() * width));
     ship.setY( (int)(Math.random() * height));
     ship.setDirectionX(0);
     ship.setDirectionY(0);
+    }
   }
 
   if(keyCode == 40){ //down arrow key, brake ship
