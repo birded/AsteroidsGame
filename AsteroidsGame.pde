@@ -3,19 +3,17 @@
  * w/s to accelerate / decelerate
  * down to brake
  * r to hyperspace
+ * space to shoot bullets
+ * you have two lives
 */
 
-//score increment based on asteroid speed
-// if dX < -0.4 or dX > 0.4 or dY < -0.4 or dY > 0.4
-//  score += 15
-
-//
 
 SpaceShip ship = new SpaceShip();
 Star[] stars;
-boolean rightPressed, leftPressed, wPressed, sPressed, rPressed, spacePressed, shipHit, gameOver = false;
+boolean rightPressed, leftPressed, wPressed, sPressed, rPressed, spacePressed, shipHit, gameOver, restart = false;
 int score = 0;
-int lives = 3;
+int lives = 2;
+int startingAsteroids = 10;
 
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
@@ -29,7 +27,7 @@ public void setup()
     stars[i] = new Star();
   }
 
-  for(int i = 0 ; i < 5 ; i++){
+  for(int i = 0 ; i < startingAsteroids ; i++){
   asteroids.add(new Asteroid());
   asteroids.get(i).accelerate(Math.random() *2);
   }
@@ -52,7 +50,11 @@ public void draw()
   }
 
   for(int i = 0; i < bullets.size() ; i++){
+
+    if(gameOver == false){
     bullets.get(i).move();
+  }
+
     bullets.get(i).show();
   }
 
@@ -98,7 +100,7 @@ public void draw()
 
 
     //remove asteroid if ship hits
-    if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , ship.getX() , ship.getY() ) < 22 ){ //dist between the asteroid and ship
+    if( dist(asteroids.get(i).getX() , asteroids.get(i).getY() , ship.getX() , ship.getY() ) < 23 ){ //dist between the asteroid and ship
       asteroids.remove(i);
       addAsteroid();
       lives--;
@@ -129,14 +131,33 @@ public void draw()
   //game over screen
 
   if(gameOver == true){
-    fill(0,0,0,100);
+    fill(0,0,0,150);
     rectMode(CENTER);
     rect(width/2, height/2, 600, 600);
 
     fill(255);
-    textAlign(CENTER);
+    textAlign(CENTER, CENTER);
     textSize(48);
     text("GAME OVER \n Score: " + score, width/2, height/2);
+
+    fill(0,0,0,150);
+    rect(width/2, 450, 200, 80);
+    fill(0,255,0);
+    text("restart", width/2, 440);
+
+  }
+
+  if(restart == true){
+    ship.setDirectionX(0);
+    ship.setDirectionY(0);
+
+    for(int i = 0; i < asteroids.size() ; i++){
+      asteroids.remove(i);
+    }
+
+    for(int i = 0 ; i < bullets.size(); i++){
+      bullets.remove(i);
+    }
 
   }
 
@@ -164,6 +185,32 @@ public void addAsteroid(){
       }
 
         asteroids.get(asteroids.size()-1).accelerate(Math.random() *2); //set an acceleration for the new asteroid
+
+}
+
+public void mousePressed(){
+  if(gameOver == true && mouseX > 200 && mouseX < 400 && mouseY > 410 && mouseY < 490){
+    //restart button
+    restart = true;
+  }
+}
+
+public void mouseReleased(){
+  if(gameOver == true && mouseX > 200 && mouseX < 400 && mouseY > 410 && mouseY < 490){
+    restart = false;
+    gameOver = false;
+    lives = 2;
+    score = 0;
+
+    ship.setX(300);
+    ship.setY(300);
+
+  for(int i = 0 ; i < startingAsteroids ; i++){
+  asteroids.add(new Asteroid());
+  asteroids.get(i).accelerate(Math.random() *2);
+  }
+
+  }
 
 }
 
