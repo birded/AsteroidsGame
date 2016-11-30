@@ -93,9 +93,6 @@ public void draw()
             //50% chance to add another asteroid, asteroids capped at 150
             addAsteroid();
           }
-          
-          System.out.println(asteroids.size());
-
         }
     } 
 
