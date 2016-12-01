@@ -17,15 +17,17 @@ header {
 }
 
 table {
-    width: 100%;
+    width: 50%;
     border-collapse: collapse;
     border: 1px solid ;
     border-color: #00ff00;
 }
 
 th, td{
+    border: 1px solid ;
+    border-color: #00ff00; 
     padding: 10px;
-    text-align: center:;
+    text-align: center;
 }
 
 
