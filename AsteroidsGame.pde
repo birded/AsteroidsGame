@@ -11,6 +11,7 @@
 SpaceShip ship = new SpaceShip();
 Star[] stars;
 boolean rightPressed, leftPressed, wPressed, sPressed, rPressed, spacePressed, shipHit, gameOver, restart, gameStart = false;
+color playButtonFill = color(0,0,0);
 int score = 0;
 int lives = 2;
 int startingAsteroids = 10;
@@ -150,6 +151,7 @@ public void draw()
     rectMode(CENTER);
     rect(width/2, height/2, 600, 600);
 
+    fill(playButtonFill);
     ellipse(width/2, height/2, 180, 180);
     triangle(width/2 - 25, height/2 - 50, width/2 - 25, height/2 + 50, width/2 + 50, height/2);
   }
@@ -202,7 +204,9 @@ public void mousePressed(){
     restart = true;
   }
 
-  if(gameStart == false){}
+  if(gameStart == false && dist(mouseX,mouseY,width/2,height/2) < 90){
+    playButtonFill = color(0,255,0,200); //fills the play button green
+  }
 }
 
 public void mouseReleased(){
@@ -222,7 +226,10 @@ public void mouseReleased(){
 
   }
 
-  if(gameStart == false && dist(mouseX,mouseY,width/2,height/2) < 90 ){
+  if(gameStart == false){
+    playButtonFill = color(0,0,0);
+
+    if(dist(mouseX,mouseY,width/2,height/2) < 90){
     gameStart = true;
     restart = false;
     gameOver = false;
@@ -235,6 +242,7 @@ public void mouseReleased(){
     for(int i = 0 ; i < startingAsteroids ; i++){
     asteroids.add(new Asteroid());
     asteroids.get(i).accelerate(Math.random() *2);
+    }
   }
 
   }
