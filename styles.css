@@ -16,6 +16,17 @@ header {
 	
 }
 
+table {
+    border-collapse: collapse;
+    border: 1px solid #00ff00;
+}
+
+th, td{
+    padding: 10px;
+    text-align: center:;
+}
+
+
 footer {
 	font-style: italic;
 	font-size: 90%;
