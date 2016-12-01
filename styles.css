@@ -17,8 +17,10 @@ header {
 }
 
 table {
+    width: 100%;
     border-collapse: collapse;
-    border: 1px solid #00ff00;
+    border: 1px solid ;
+    border-color: #00ff00;
 }
 
 th, td{
