@@ -209,8 +209,8 @@ public void mousePressed(){
   }
 }
 
-public void mouseReleased(){
-  if(gameOver == true && mouseX > 200 && mouseX < 400 && mouseY > 410 && mouseY < 490){
+public void mouseClicked(){
+if(gameOver == true && mouseX > 200 && mouseX < 400 && mouseY > 410 && mouseY < 490){
     restart = false;
     gameOver = false;
     lives = 2;
@@ -225,7 +225,9 @@ public void mouseReleased(){
   }
 
   }
+}
 
+public void mouseReleased(){
   if(gameStart == false){
     playButtonFill = color(0,0,0);
 
