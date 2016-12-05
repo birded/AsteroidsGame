@@ -218,6 +218,8 @@ if(gameOver == true && mouseX > 200 && mouseX < 400 && mouseY > 410 && mouseY < 
 
     ship.setX(300);
     ship.setY(300);
+    ship.setDirectionX(0);
+    ship.setDirectionY(0);
 
     for(int i = 0 ; i < startingAsteroids ; i++){
     asteroids.add(new Asteroid());
