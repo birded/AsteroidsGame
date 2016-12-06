@@ -10,7 +10,7 @@
 
 SpaceShip ship = new SpaceShip();
 Star[] stars;
-boolean rightPressed, leftPressed, wPressed, sPressed, rPressed, spacePressed, shipHit, gameOver, restart, gameStart = false;
+boolean rightPressed, leftPressed, upPressed, downPressed, rPressed, spacePressed, shipHit, gameOver, restart, gameStart = false;
 color playButtonFill = color(0,0,0);
 int score = 0;
 int lives = 2;
@@ -121,8 +121,8 @@ public void draw()
   if(gameOver == false){ //only able to control ship if game is not over
     if(rightPressed){ ship.rotate(5); }
     if(leftPressed){ ship.rotate(-5); }
-    if(wPressed){ ship.accelerate(0.1); }
-    if(sPressed){ ship.accelerate(-0.1); }
+    if(upPressed){ ship.accelerate(0.1); }
+    if(downPressed){ ship.accelerate(-0.1); }
     if(spacePressed && frameCount%10 == 0){ bullets.add(new Bullet(ship));} //limits # of bullets created
   }
 
@@ -260,9 +260,9 @@ public void keyPressed(){
 
   if(keyCode == 32){spacePressed = true;} //spacebar
 
-  if(key == 'w'){wPressed = true;}
+  if(keyCode == 40){downPressed = true;} //down
 
-  if(key == 's'){sPressed = true;}
+  if(keyCode == 38){upPressed = true;} //up
 
   if(key == 'r'){ //hyperspace
     if(gameOver == false){
@@ -273,7 +273,7 @@ public void keyPressed(){
     }
   }
 
-  if(keyCode == 40){ //down arrow key, brake ship
+  if(key == 's'){ //down arrow key, brake ship 40
     ship.setDirectionY(0); 
     ship.setDirectionX(0);
   }
@@ -286,9 +286,9 @@ public void keyReleased(){
 
   if(keyCode == 32){spacePressed = false;} //space
 
-  if(key == 'w'){wPressed = false;}
+  if(keyCode == 40){downPressed = false;} //down
 
-  if(key == 's'){sPressed = false;}
+  if(keyCode == 38){upPressed = false;} //up
 
 }
 
